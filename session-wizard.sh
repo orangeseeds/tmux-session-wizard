@@ -5,7 +5,7 @@
 
 __fzfcmd() {
   [ -n "$TMUX_PANE" ] && { [ "${FZF_TMUX:-0}" != 0 ] || [ -n "$FZF_TMUX_OPTS" ]; } &&
-    echo "fzf-tmux ${FZF_TMUX_OPTS:--d${FZF_TMUX_HEIGHT:-40%}} -- " || echo "fzf"
+    echo "fzf-tmux ${FZF_TMUX_OPTS:--d${FZF_TMUX_HEIGHT:-20%}} -- " || echo "fzf"
 }
 
 # Parse optional argument
@@ -17,7 +17,7 @@ else
   # No argument is given. Use FZF
   RESULT=$( (tmux list-sessions -F "#{session_last_attached} #{session_name}: #{session_windows} window(s)\
 #{?session_grouped, (group ,}#{session_group}#{?session_grouped,),}#{?session_attached, (attached),}"\
-| sort -r | (if [ -n "$TMUX" ]; then grep -v " $(tmux display-message -p '#S'):"; else cat; fi) | cut -d' ' -f2-)  | $(__fzfcmd) --reverse --print-query | tail -n 1)
+| sort -r | cut -d' ' -f2-)  | $(__fzfcmd) --reverse --print-query | tail -n 1)
   if [ -z "$RESULT" ]; then
     exit 0
   fi
