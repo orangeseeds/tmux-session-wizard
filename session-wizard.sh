@@ -11,13 +11,13 @@ __fzfcmd() {
 # Parse optional argument
 if [ "$1" ]; then
   # Argument is given
-  eval "$(zoxide init bash)"
+  # eval "$(zoxide init bash)"
   RESULT=$(z $@ && pwd)
 else
   # No argument is given. Use FZF
   RESULT=$( (tmux list-sessions -F "#{session_last_attached} #{session_name}: #{session_windows} window(s)\
 #{?session_grouped, (group ,}#{session_group}#{?session_grouped,),}#{?session_attached, (attached),}"\
-| sort -r | (if [ -n "$TMUX" ]; then grep -v " $(tmux display-message -p '#S'):"; else cat; fi) | cut -d' ' -f2-; zoxide query -l)  | $(__fzfcmd) --reverse --print-query | tail -n 1)
+| sort -r | (if [ -n "$TMUX" ]; then grep -v " $(tmux display-message -p '#S'):"; else cat; fi) | cut -d' ' -f2-)  | $(__fzfcmd) --reverse --print-query | tail -n 1)
   if [ -z "$RESULT" ]; then
     exit 0
   fi
@@ -37,7 +37,7 @@ else
   fi
 
   # Promote rank in zoxide.
-  zoxide add "$RESULT"
+  # zoxide add "$RESULT"
 
   SESSION=$(basename "$RESULT" | tr . - | tr ' ' - | tr ':' - | tr '[:upper:]' '[:lower:]')
   if ! tmux has-session -t=$SESSION 2> /dev/null; then
